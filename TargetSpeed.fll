@@ -1,0 +1,46 @@
+Engine: TargetSpeed
+InputVariable: Front
+    enabled: true
+    range: 0.000 200.000
+    term: LOW Trapezoid -1.000 0.000 60.000 100.000
+    term: MEDIUM Trapezoid 60.000 100.000 160.000 180.000
+    term: HIGH Trapezoid 160.000 180.000 200.000 201.000
+InputVariable: M5
+    enabled: true
+    range: 0.000 200.000
+    term: LOW Trapezoid -1.000 0.000 80.000 120.000
+    term: MEDIUM Trapezoid 80.000 120.000 160.000 180.000
+    term: HIGH Trapezoid 160.000 180.000 200.000 201.000
+InputVariable: M10
+    enabled: true
+    range: 0.000 200.000
+    term: LOW Trapezoid -1.000 0.000 60.000 80.000
+    term: MEDIUM Trapezoid 60.000 80.000 100.000 180.000
+    term: HIGH Trapezoid 100.000 180.000 200.000 201.000
+OutputVariable: Speed
+    enabled: true
+    range: 40.000 240.000
+    lock-range: true
+    lock-previous: true
+    aggregation: Maximum
+    defuzzifier: WeightedAverage Automatic
+    term: TS1 Constant 240
+    term: TS2 Constant 140
+    term: TS3 Constant 120
+    term: TS4 Constant 100
+    term: TS5 Constant 80
+    term: TS6 Constant 60
+    term: TS7 Constant 40
+RuleBlock:
+    enabled: true
+    conjunction: AlgebraicProduct
+    disjunction: none
+    implication: Minimum
+    activation: General
+    rule: if Front is HIGH then Speed is TS1
+    rule: if Front is MEDIUM then Speed is TS2
+    rule: if Front is LOW and M5 is HIGH then Speed is TS3
+    rule: if Front is LOW and M5 is MEDIUM then Speed is TS4
+    rule: if Front is LOW and M5 is LOW and M10 is HIGH then Speed is TS5
+    rule: if Front is LOW and M5 is LOW and M10 is MEDIUM then Speed is TS6
+    rule: if Front is LOW and M5 is LOW and M10 is LOW then Speed is TS7

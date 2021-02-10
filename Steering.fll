@@ -1,0 +1,43 @@
+Engine: Steering
+InputVariable: Front
+    enabled: true
+    range: 0.000 100.000
+    term: LOW Trapezoid -1.000 0.000 20.000 60.000
+    term: MEDIUM Trapezoid 20.000 60.000 90.000 92.000
+    term: HIGH Trapezoid 90.000 92.000 100.000 101.000
+InputVariable: M5
+    enabled: true
+    range: 0.000 100.000
+    term: LOW Trapezoid -1.000 0.000 35.000 90.000
+    term: MEDIUM Trapezoid 35.000 90.000 92.000 95.000
+    term: HIGH Trapezoid 92.000 95.000 100.000 101.000
+InputVariable: M10
+    enabled: true
+    range: 0.000 100.000
+    term: LOW Trapezoid -1.000 0.000 20.000 30.000
+    term: MEDIUM Trapezoid 20.000 30.000 35.000 95.000
+    term: HIGH Trapezoid 35.000 95.000 100.000 101.000
+OutputVariable: Steer
+    enabled: true
+    range: 0.000 1.000
+    lock-range: true
+    lock-previous: true
+    aggregation: Maximum
+    defuzzifier: WeightedAverage Automatic
+    term: S1 Constant 0.000
+    term: S2 Constant 0.250
+    term: S3 Constant 0.500
+    term: S4 Constant 1.000
+RuleBlock:
+    enabled: true
+    conjunction: AlgebraicProduct
+    disjunction: none
+    implication: Minimum
+    activation: General
+    rule: if Front is HIGH then Steer is S1
+    rule: if Front is MEDIUM and M10 is HIGH then Steer is S2
+    rule: if Front is MEDIUM and M10 is MEDIUM and M5 is MEDIUM then Steer is S2
+    rule: if Front is MEDIUM and M10 is MEDIUM and M5 is LOW then Steer is S3
+    rule: if Front is LOW and M10 is HIGH then Steer is S3
+    rule: if Front is LOW and M10 is MEDIUM and M5 is MEDIUM then Steer is S4
+    rule: if Front is LOW and M10 is MEDIUM and M5 is LOW then Steer is S4
